@@ -1,51 +1,81 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class GrabEnemy : MonoBehaviour
+namespace Assets
 {
-    public Transform Offset;
-
-    private FixedJoint2D _grabJoint;
-    private bool _isGrabbing;
-    private Transform _lastGrabbed;
-    
-    public void Start()
+    public class GrabEnemy : MonoBehaviour
     {
-        _grabJoint = GetComponent<FixedJoint2D>();
-    }
+        public Transform Offset;
 
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy" && collision.transform != _lastGrabbed)
+        //private FixedJoint2D _grabJoint;
+        private bool _isGrabbing;
+        private GameObject _grabbedGuy;
+        private Rigidbody2D _rigidbody;
+
+        public void Start()
         {
-            _grabJoint.enabled = true;
-            _grabJoint.connectedBody = collision.gameObject.GetComponent<Rigidbody2D>();
-
-            transform.position = collision.transform.position - Offset.transform.localPosition;
-            _lastGrabbed = collision.transform;
-            _isGrabbing = true;
+            //_grabJoint = GetComponent<FixedJoint2D>();
+            _rigidbody = GetComponent<Rigidbody2D>();
+            Events.instance.AddListener<EnemyKilledEvent>(EnemyKilled);
         }
-    }
 
-    public void Disconnect()
-    {
-        if (_isGrabbing)
+        public void OnTriggerEnter2D(Collider2D collision)
         {
-            _isGrabbing = false;
+            if (collision.gameObject.tag == "Enemy" && collision.gameObject != _grabbedGuy)
+            {
+                _grabbedGuy = collision.gameObject;
+                _isGrabbing = true;
 
-            _grabJoint.enabled = false;
-            _grabJoint.connectedBody = null;
-
-            StartCoroutine(ResetLastGrabbed());
+                _rigidbody.isKinematic = true;
+                _rigidbody.velocity = Vector3.zero;
+            }
         }
-    }
 
-    public IEnumerator ResetLastGrabbed()
-    {
-        yield return new WaitForSeconds(1);
-        if(!_isGrabbing)
+        public void Update()
         {
-            _lastGrabbed = null;
+            if (_isGrabbing)
+            {
+                var toGrabOffset = (_grabbedGuy.transform.position - Offset.transform.localPosition) - transform.localPosition;
+
+                transform.position = transform.position + toGrabOffset * 0.2f;
+            }
+        }
+
+        public void LetGo()
+        {
+            if (_isGrabbing)
+            {
+                _isGrabbing = false;
+                _rigidbody.isKinematic = false;
+
+                StartCoroutine(ResetLastGrabbed());
+            }
+        }
+
+        public IEnumerator ResetLastGrabbed()
+        {
+            yield return new WaitForSeconds(1);
+            if(!_isGrabbing)
+            {
+                _grabbedGuy = null;
+            }
+        }
+
+        public void PunchFace()
+        {
+            if (_isGrabbing)
+            {
+                var enemy = _grabbedGuy.GetComponent<Enemy>();
+                enemy.Hurt(1);
+            }
+        }
+
+        private void EnemyKilled(EnemyKilledEvent e)
+        {
+            if(e.Enemy.gameObject == _grabbedGuy)
+            {
+                LetGo();
+            }
         }
     }
 }
