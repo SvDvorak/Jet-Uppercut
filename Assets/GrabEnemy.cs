@@ -7,16 +7,16 @@ namespace Assets
     {
         public Transform Offset;
 
-        //private FixedJoint2D _grabJoint;
         private bool _isGrabbing;
         private GameObject _grabbedGuy;
         private Rigidbody2D _rigidbody;
+        private Animator _animator;
 
         public void Start()
         {
-            //_grabJoint = GetComponent<FixedJoint2D>();
             _rigidbody = GetComponent<Rigidbody2D>();
             Events.instance.AddListener<EnemyKilledEvent>(EnemyKilled);
+            _animator = GetComponent<Animator>();
         }
 
         public void OnTriggerEnter2D(Collider2D collision)
@@ -28,7 +28,14 @@ namespace Assets
 
                 _rigidbody.isKinematic = true;
                 _rigidbody.velocity = Vector3.zero;
+
+                UpdateAnimator();
             }
+        }
+
+        private void UpdateAnimator()
+        {
+            _animator.SetBool("Grabbed", _isGrabbing);
         }
 
         public void Update()
@@ -49,6 +56,8 @@ namespace Assets
                 _rigidbody.isKinematic = false;
 
                 StartCoroutine(ResetLastGrabbed());
+
+                UpdateAnimator();
             }
         }
 

@@ -9,11 +9,13 @@ namespace Assets
         private Vector3 _inputDownPosition;
         private Rigidbody2D _rigidbody;
         private GrabEnemy _grabEnemy;
+        private Animator _animator;
 
         public void Start()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _grabEnemy = GetComponent<GrabEnemy>();
+            _animator = GetComponent<Animator>();
         }
 
         public void Update()
@@ -37,6 +39,8 @@ namespace Assets
                     var jumpDirection = toTarget.normalized;
 
                     _rigidbody.AddForce(jumpDirection*Force, ForceMode2D.Impulse);
+
+                    _animator.SetBool("InAir", true);
                 }
                 else
                 {
