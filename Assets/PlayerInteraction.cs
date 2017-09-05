@@ -18,14 +18,16 @@ namespace Assets
 
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            var input = Input.touchSupported ? GetTouchInput() : GetMouseInput();
+
+            if (input.Down)
             {
-                _inputDownPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                _inputDownPosition = input.Position;
             }
 
-            if (Input.GetMouseButtonUp(0) && _inputDownPosition != null)
+            if (input.Up && _inputDownPosition != null)
             {
-                var inputEndPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var inputEndPosition = input.Position;
                 var toTarget = inputEndPosition - _inputDownPosition;
 
                 if (toTarget.magnitude > 0.5f)
@@ -42,5 +44,36 @@ namespace Assets
                 }
             }
         }
+
+        private static InputState GetMouseInput()
+        {
+            return new InputState
+            {
+                Down = Input.GetMouseButtonDown(0),
+                Up = Input.GetMouseButtonUp(0),
+                Position = Camera.main.ScreenToWorldPoint(Input.mousePosition)
+            };
+        }
+
+        private static InputState GetTouchInput()
+        {
+            var input = new InputState();
+            if (Input.touchCount > 0)
+            {
+                var touch = Input.GetTouch(0);
+                input.Down = touch.phase == TouchPhase.Began;
+                input.Up = touch.phase == TouchPhase.Ended;
+                input.Position = Camera.main.ScreenToWorldPoint(touch.position);
+            }
+
+            return input;
+        }
+    }
+
+    public class InputState
+    {
+        public bool Down { get; set; }
+        public bool Up { get; set; }
+        public Vector3 Position { get; set; }
     }
 }
