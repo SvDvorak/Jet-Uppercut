@@ -38,6 +38,7 @@ namespace Assets
 
                     var jumpDirection = toTarget.normalized;
 
+                    _rigidbody.velocity = Vector3.zero;
                     _rigidbody.AddForce(jumpDirection*Force, ForceMode2D.Impulse);
 
                     _animator.SetBool("InAir", true);
