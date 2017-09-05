@@ -47,6 +47,10 @@ namespace Assets
                     _grabEnemy.PunchFace();
                 }
             }
+
+            var goingLeft = _rigidbody.velocity.x < 0;
+            var s = transform.localScale;
+            transform.localScale = new Vector3(goingLeft ? -Mathf.Abs(s.x) : Mathf.Abs(s.x), s.y, s.z);
         }
 
         private static InputState GetMouseInput()
