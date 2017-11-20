@@ -1,0 +1,61 @@
+Jet Uppercut
+
+
+Summary
+A lightweight arcade action game where you try to get as high up in the sky as possible by climbing and fighting jetpacking enemies that are out to kill you. Beat them up enough to incapacitate them before aiming and jumping to your next target, repeating for each new incoming enemy without missing a jump or getting shot.
+
+Inspirations
+- Fighting game juggling, keeping an enemy in the air for as long as possible where each attack keeps the player and enemy up
+- Icy Climbers style climbing game, going from platform to platform
+- Broforce, feeling awesome like the brute you play with over the top effects
+
+Gameplay
+The goal of the game is getting as high up in the air as possible, using enemies as stepping stones. Enemies spawn in continously and should be killed before continuing or else their continued fire will kill you. Player can only take one hit before dying and falling off the screen due to gravity also results in death.
+
+Player starts on the ground with a single enemy coming in. Possibly he is shielded while meditating and player decides when game starts by tapping a single time. Character starts raging and player gets full control.
+
+Enemies will contiue to come in from the sides of the screen. Undecided if they should move to one spot and stay there, continuously move around smoothly (slowly though) or move around discretely (timed moves with telegraphing).
+
+Game mechanics
+- Jump
+A drag on the screen makes the player character jump in the direction of the drag. Can be done anywhere on the screen, position or length of drag is not used, only direction. He has no control of the jump while midair. The player character grabs and pins the first enemy that crosses his flying path. Player is not affected by gravity at that point but is instead supported by the jetpack of the enemy he has grabbed. A pinned enemy cannot attack.
+
+Jumping from an enemy that has not been killed might only give a small shove to that enemy and shortly after he will continue attacking the player.
+
+- Punch (can only be done when pinning an enemy)
+Tapping the screen makes the player character punch the pinned enemy. The punch is fast but will only do a small bit of damage (health also depends on enemy type) so player must tap quickly to kill the enemy. Possibly each punch moves the player and enemy upwards similar to fighting games.
+
+At a certain threshold the enemy is dead, any continued punching does no benefit. It could be implemented that continous punching only removes bodyparts until nothing is left and player character falls to his death. When jumping from a dead character that character is pushed away in the opposite direction and explodes in a pleasing ball of fire (jetpack blows up).
+
+- (possible suggestion) Super punch (can only be done when pinning an enemy)
+Tapping and holding the screen (without dragging) charges up a stronger punch. Releasing the finger unleashes the charged attack. Damage depends on length of charge with a maximum limit. Could be that this attack also stuns the character for much longer so that the player can continue on with other characters and come back again.
+
+Characters
+
+Player
+A man who just wants to enjoy his meditation. A very strong man. But The Man just won't let him, they're just trying to kill him at all times. A man can only be pushed so far before he breaks. Or goes crazy. It might not be to them but for him, it's personal.
+
+Enemies
+High-tech assassins that believe that killing isn't personal so it shouldn't be done up close (and personal). A jetpack is a good way of keeping that distance. It's just business. Also, how else can you really "elevate" your personel other than with jetpacks? And of course, every employee of Gun & Suit Inc wears a company issued suit and tie.
+
+Types
+- Well Suited Grunt
+The first rung of Gun & Suit Inc, first line of offense for standard assassination contract. Has a semi-automatic rifle that has to cool between shots. Takes a little time to aim before shooting its straight shot. Pretty weak and can't handle many knuckle sandwiches before passing out.
+
+- Shielded Grunt
+Has done well enough at Gun & Suit to get a small protective shield that he can aim one direction. Sure, it's only one direction but hey, atleast it's something. Player needs to attack from a direction other than the one being shielded. And he still has the standard issue rifle.
+
+- Telefragger
+Jetpacks are cool. But teleporters and jetpacks are even cooler. A new experimental division of Gun & Suit where grunts are equipped with a shortrange teleporter to use when being charged at by the player character. Instead of getting pinned they teleport away to a different point. It takes a while to recharge though, leaving them vulnerable. Possibly the ghost the character remains so the player can react to him disappearing and choose a new target.
+
+- Laser Consultant
+Not directly employed by Gun & Suit but instead subcontracted from the family company Laser & Laser. Carries a high-power laser that charges up and continuously fires a strong beam. Great area of denial as he will shoot between enemies to block off potential escape-paths. I mean, he doesn't want to offend his customer by shooting straight at their employees right?
+
+- Heavy Artillery
+These mountains of people usually quickly rise in the ranks. No one really can beat their pure strength... literally, no others have been able to make these guys tap out. Too beefy to actually use their appendages they instead have a big missile launcher strapped to their backs.
+    Possible gameplay
+    - These missiles track the player and explode after a while. Player must punch a missile to disarm and then kick it away or just keep far away when it does explode
+    - Missile follows player and explodes after a while, player must keep his distance.
+
+Highscores
+When the player dies the height is recorded and sent to a server. A highscore is shown to the player with the default view being one with his score in relation to his friends. Player can choose to restart.
