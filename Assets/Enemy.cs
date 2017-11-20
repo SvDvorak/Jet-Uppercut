@@ -7,6 +7,7 @@ namespace Assets
     {
         public float HoverMove = 0.2f;
         public float CurrentHealth;
+	    public Transform Weapon;
 
         private const float PunchRotationAmount = 45;
         private const float HoverLoopTime = 2f;
@@ -18,29 +19,50 @@ namespace Assets
         {
             _moveTarget = transform.position;
             _initialScale = transform.localScale;
+	        _player = GameObject.Find("Player");
         }
 
         private float _timePlayed = 0;
         private float _totalTime = 0.6f;
+	    private GameObject _player;
 
-        public void Update()
+	    public void Update()
         {
             var hoverProgress = Time.time % HoverLoopTime / HoverLoopTime;
             transform.position = (_moveTarget + Vector3.up * HoverMove * Mathf.Sin(hoverProgress * 2 * Mathf.PI));
 
-            //if (_timePlayed < _totalTime)
-            //{
-            //    var progress = _timePlayed / _totalTime;
-            //    transform.localScale = _initialScale * (1 - progress) + _initialScale * 1.15f * progress;
-            //    _timePlayed += Time.deltaTime;
-            //}
-            //else
-            //{
-            //    _timePlayed = 0;
-            //}
+	        AimAt(_player.transform.position);
+	        //if (_timePlayed < _totalTime)
+	        //{
+	        //    var progress = _timePlayed / _totalTime;
+	        //    transform.localScale = _initialScale * (1 - progress) + _initialScale * 1.15f * progress;
+	        //    _timePlayed += Time.deltaTime;
+	        //}
+	        //else
+	        //{
+	        //    _timePlayed = 0;
+	        //}
         }
 
-        public void Hurt(int damage)
+	    private void AimAt(Vector3 position)
+	    {
+		    var toTarget = transform.position - position;
+			var s = Weapon.localScale;
+
+		    var onRight = toTarget.x > 0;
+		    if (onRight)
+		    {
+			    Weapon.right = toTarget;
+			    Weapon.localScale = new Vector3(Mathf.Abs(s.x), s.y, s.z);
+		    }
+		    else
+		    {
+			    Weapon.right = -toTarget;
+			    Weapon.localScale = new Vector3(-Mathf.Abs(s.x), s.y, s.z);
+		    }
+	    }
+
+	    public void Hurt(int damage)
         {
             CurrentHealth -= damage;
             transform.DOPunchScale(_initialScale * 0.15f, 0.2f);
