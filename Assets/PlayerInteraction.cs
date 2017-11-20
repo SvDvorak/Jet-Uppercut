@@ -27,7 +27,7 @@ namespace Assets
                 _inputDownPosition = input.Position;
             }
 
-            if (input.Up && _inputDownPosition != null)
+            if (input.Up)
             {
                 var inputEndPosition = input.Position;
                 var toTarget = inputEndPosition - _inputDownPosition;

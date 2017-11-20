@@ -7,7 +7,9 @@ namespace Assets
     {
         public float HoverMove = 0.2f;
         public float CurrentHealth;
+	    public float FireDelay;
 	    public Transform Weapon;
+	    public GameObject Projectile;
 
         private const float PunchRotationAmount = 45;
         private const float HoverLoopTime = 2f;
@@ -20,11 +22,14 @@ namespace Assets
             _moveTarget = transform.position;
             _initialScale = transform.localScale;
 	        _player = GameObject.Find("Player");
+			_timeTillFire = FireDelay * Random.value;
         }
 
         private float _timePlayed = 0;
         private float _totalTime = 0.6f;
 	    private GameObject _player;
+	    private float _timeTillFire;
+	    private bool _weaponFlipped;
 
 	    public void Update()
         {
@@ -32,6 +37,13 @@ namespace Assets
             transform.position = (_moveTarget + Vector3.up * HoverMove * Mathf.Sin(hoverProgress * 2 * Mathf.PI));
 
 	        AimAt(_player.transform.position);
+
+	        _timeTillFire -= Time.deltaTime;
+	        if (_timeTillFire < 0)
+	        {
+		        Fire();
+		        _timeTillFire = FireDelay + FireDelay / 10 * Time.deltaTime;
+	        }
 	        //if (_timePlayed < _totalTime)
 	        //{
 	        //    var progress = _timePlayed / _totalTime;
@@ -49,8 +61,8 @@ namespace Assets
 		    var toTarget = transform.position - position;
 			var s = Weapon.localScale;
 
-		    var onRight = toTarget.x > 0;
-		    if (onRight)
+		    _weaponFlipped = toTarget.x > 0;
+		    if (_weaponFlipped)
 		    {
 			    Weapon.right = toTarget;
 			    Weapon.localScale = new Vector3(Mathf.Abs(s.x), s.y, s.z);
@@ -60,6 +72,13 @@ namespace Assets
 			    Weapon.right = -toTarget;
 			    Weapon.localScale = new Vector3(-Mathf.Abs(s.x), s.y, s.z);
 		    }
+	    }
+
+	    private void Fire()
+	    {
+		    var projectile = Instantiate(Projectile);
+		    projectile.transform.position = transform.position;
+		    projectile.transform.right = _weaponFlipped ? -Weapon.right : Weapon.right;
 	    }
 
 	    public void Hurt(int damage)

@@ -131,7 +131,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HoverMove: 0.2
   CurrentHealth: 10
+  FireDelay: 5
   Weapon: {fileID: 4398258113249034}
+  Projectile: {fileID: 1472904990625208, guid: 7d9cba0a57ff9c64184f4777b6634ba4, type: 2}
 --- !u!212 &212120502220872094
 SpriteRenderer:
   m_ObjectHideFlags: 1
